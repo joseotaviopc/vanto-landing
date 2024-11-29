@@ -2,8 +2,9 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDollarSign, faThumbsUp, faFileLines } from '@fortawesome/free-solid-svg-icons'
 
-export function Footer() {
+export function Footer({isModalOpen}: {isModalOpen: boolean}) {
     const [selected, setSelected] = React.useState(0);
+    if (isModalOpen) return null
     return (
         <footer className="bg-white fixed w-full bottom-0 ">
             <div className='bg-[rgb(92_120_156)] px-6 pt-2 mt-2 pb-4 mb-0.5 flex justify-around items-center z-10 mx-4 rounded-full'>
