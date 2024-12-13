@@ -3,7 +3,8 @@ import axios, { AxiosError } from 'axios';
 
 const API_DEV = 'http://localhost:3333'
 // const API_PROD = 'https://arriel-vanto-back.deno.dev'
-const API = API_DEV
+const API_PROD = 'vanto-back-production.up.railway.app'
+const API = API_PROD
 
 const api = axios.create({
     baseURL: API,
