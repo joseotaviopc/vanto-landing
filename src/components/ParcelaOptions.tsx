@@ -2,47 +2,52 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQrcode, faEye, faEnvelope, faArrowUpFromBracket, faHashtag, faCopy } from '@fortawesome/free-solid-svg-icons'
 import React from 'react';
 
-export function ParcelaOptions() {
-    const [showCopyAlert, setShowCopyAlert] = React.useState(false);
+export function ParcelaOptions({handleShowPdf}: {handleShowPdf: () => void}) {
+    const [showCopyAlert, ] = React.useState(false);
     const [showCopyPix, setShowCopyPix] = React.useState(false);
+
+    // This is the function we wrote earlier
+    async function copyTextToClipboard(text: string) {
+        if ('clipboard' in navigator) {
+        return await navigator.clipboard.writeText(text);
+        } else {
+        return document.execCommand('copy', true, text);
+        }
+    }
+
+    const text = '848700000017521203790035741577704020174614086698';
+
+    // onClick handler function for the copy button
+    const handleCopyClick = () => {
+        // Asynchronously call copyTextToClipboard
+        copyTextToClipboard(text)
+        .then(() => {
+            // If successful, update the isCopied state value
+            setShowCopyPix(true);
+            setTimeout(() => {
+            setShowCopyPix(false);
+            }, 1500);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 
     const options = [
         {
             icon: faEye,
             text: 'Visualizar',
-            onClick: () => {}
+            onClick: handleShowPdf
         },
         {
             icon: faHashtag,
             text: 'Código',
-            onClick: () => {
-                navigator.clipboard.writeText('848700000017521203790035741577704020174614086698')
-                    .then(() => {
-                        setShowCopyAlert(true);
-                        setTimeout(() => {
-                            setShowCopyAlert(false);
-                        }, 3000);
-                    })
-                    .catch((err) => {
-                        console.error('Failed to copy text:', err);
-                    });
-            }
+            onClick: handleCopyClick
         },
         {
             icon: faQrcode,
             text: 'Pix',
-            onClick: () => {
-                navigator.clipboard.writeText('848700000017521203790035741577704020174614086698')
-                    .then(() => {
-                        setShowCopyPix(true);
-                        setTimeout(() => {
-                            setShowCopyPix(false);
-                        }, 3000);
-                    })
-                    .catch((err) => {
-                        console.error('Failed to copy text:', err);
-                    });
-            }
+            onClick: handleCopyClick
         },
         {
             icon: faEnvelope,
@@ -74,12 +79,12 @@ export function ParcelaOptions() {
         )}
         {options.map((option, index) => (
             <div className='flex flex-col gap-2 items-center' key={index}>
-                <div
-                    className={`bg-[rgb(90_132_190)] rounded-lg min-w-[calc(0.25rem*22)] h-24 py-2 flex flex-col items-center justify-evenly`}
+                <button
+                    className={`bg-[rgb(90_132_190)]  cursor-pointer rounded-lg min-w-[calc(0.25rem*22)] h-24 py-2 flex flex-col items-center justify-evenly`}
                     onClick={option.onClick}
                 >
                     <FontAwesomeIcon icon={option.icon} className='text-white text-3xl' />
-                </div>
+                </button>
                 <p className="text-black font-medium text-lg" >{option.text}</p>
             </div>
         ))}
