@@ -25,3 +25,4 @@ dist-ssr
 
 *.lockb
 *.lock
+.env
