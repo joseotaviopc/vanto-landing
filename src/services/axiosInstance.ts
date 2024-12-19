@@ -1,19 +1,17 @@
 import axios, { AxiosError } from 'axios';
 
 
-// const API_DEV = 'http://localhost:3333'
-// const API_PROD = 'https://arriel-vanto-back.deno.dev'
-const API_PROD = 'https://vanto-back-production.up.railway.app'
-const API = API_PROD
+const API_DEV = 'http://localhost:3333'
+// const API_PROD = 'https://vanto-back-production.up.railway.app'
+const API = API_DEV
 
 const api = axios.create({
     baseURL: API,
 });
 
-// Add a request interceptor
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('accessToken'); // or however you store the token
+        const token = localStorage.getItem('accessToken');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
