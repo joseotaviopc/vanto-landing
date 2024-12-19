@@ -4,6 +4,7 @@ import { Automovel as AutomovelType } from '../../services/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Header } from '../../components/Header';
+import { useAuth } from '../../context/useAuth';
 
 export function Automoveis() {
     const [automoveis, setAutomoveis] = useState<AutomovelType[]>([]);
@@ -11,12 +12,17 @@ export function Automoveis() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { user, logout } = useAuth()
     const limit = 100;
 
     const fetchAutomoveis = useCallback(async () => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const response = await DatabaseService.getAutomoveis(currentPage, limit);
+            if (!user || !user.id) {
+                throw new Error('Usuário não encontrado');
+                logout()
+            }
+            const response = await DatabaseService.getAutomoveisById(user.id, currentPage, limit);
             setAutomoveis(response.data);
             setTotalPages(Math.ceil(response.pagination.total / limit));
         } catch (err) {
@@ -28,7 +34,7 @@ export function Automoveis() {
     }, [currentPage]);
 
     useEffect(() => {
-        void fetchAutomoveis();
+        fetchAutomoveis();
     }, [currentPage, fetchAutomoveis]);
 
     if (loading) {
