@@ -1,24 +1,22 @@
 // create a context file to handle isLoggedIn state
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import { DatabaseService } from '../services/database.service';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { Usuario } from '../services/types';
 
 interface AuthContextType {
     isLogged: boolean;
-    user: User | null
+    user: Partial<Usuario> | null
     login: (cpf: string, date: string) => Promise<void>;
     logout: () => void;
-}
-
-interface User {
-    id: number;
-    name: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({ children }: { children: ReactNode }) {
     const [isLogged, setIsLogged] = useState(false);
-    const [user, setUser] = useState<User | null>(null)
+    const [user, setUser] = useState<Partial<Usuario> | null>(null)
 
     const login = async (cpf: string, date: string) => {
         try {
@@ -26,8 +24,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
             // console.log('Context',user)
             setUser(user)
             setIsLogged(true);
+            toast.success("Login efetuado com sucesso!")
         } catch (error) {
             setIsLogged(false);
+            toast.error("Login falhou!")
             console.error('Error during login:', error);
         }
     };
@@ -47,7 +47,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         // console.log(isLogged)
         if (token && user) {
             setIsLogged(true);
-            setUser(JSON.parse(user) as User)
+            setUser(JSON.parse(user) as Partial<Usuario>)
         }
     }, []);
 
