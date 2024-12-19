@@ -39,8 +39,8 @@ export interface Titulo {
   }
   
   export interface Usuario {
-    id_usuario: number;
-    nome: string;
+    id: number;
+    name: string;
     cpf_cnpj: string;
     data_nascimento: string;
     ativo: number;
@@ -68,8 +68,5 @@ export interface Titulo {
 
   export interface Loginresponse { 
     accessToken: string, 
-    user: { 
-      id: number,
-      name: string 
-    } 
+    user: Partial<Usuario> 
   }
