@@ -7,33 +7,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const loginSchema = z.object({
-    cpf: z.string().min(11, { message: 'CPF inválido' }),
+    cpf: z.string().min(11, { message: 'CPF inválido' }).refine(val => {
+        return validateCPF(val)
+    }, { message: 'CPF inválido' }),
     password: z.string().min(6, { message: 'Data inválida' }),
 });
 
 type FormData = z.infer<typeof loginSchema>;
 
 export function Login() {
-    const { register, setValue, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<FormData>({
+    const { register, setValue, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
         resolver: zodResolver(loginSchema)
     });
     const { login } = useAuth();
 
     const onSubmit = async (data: FormData) => {
-        const formattedCPF = formatCPF(data.cpf);
-        console.log(data.cpf, formattedCPF)
-        if (!validateCPF(formattedCPF)) {
-            setError("cpf", { type: "manual", message: "CPF inválido" });
-            return;
-        }
         const brDate = convertDateFormat(data.password)
-
         const cleanCpf = cpfOnlyNumbers(data.cpf)
         const convertDate = formatDateToISO(brDate)
+
         await login(cleanCpf, convertDate.split('T')[0])
-        // .catch((error) => {
-        //     console.error("Login failed:", error);
-        // })
     };
 
     return (
