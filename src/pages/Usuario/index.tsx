@@ -5,13 +5,15 @@ import { formatCPF } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Header } from '../../components/Header';
+import { useAuth } from '../../context/useAuth';
 
 export function Usuario() {
-    const [users, setUsers] = useState<UsuarioType[]>([]);
+    const [users, setUsers] = useState<UsuarioType[] | Partial<UsuarioType>[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { user } = useAuth()
     const limit = 20;
 
     const fetchUsers = useCallback(async () => {
@@ -29,7 +31,11 @@ export function Usuario() {
     }, [currentPage]);
 
     useEffect(() => {
-        fetchUsers();
+        // fetchUsers();
+        if (user) {
+            setUsers([user])
+            setLoading(false)
+        }
     }, [currentPage, fetchUsers]);
 
     if (loading) {
@@ -52,7 +58,7 @@ export function Usuario() {
         <main className=" text-white w-screen flex flex-col">
             <Header />
             <div className="container mx-auto px-4 py-8 mt-36">
-                <h1 className="text-2xl font-bold mb-6 text-gray-800">Usuários</h1>
+                <h1 className="text-2xl font-bold mb-6 text-gray-800">Usuário</h1>
                 
                 <div className="overflow-x-auto bg-white rounded-lg shadow">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -67,31 +73,21 @@ export function Usuario() {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Data de Nascimento
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {users.map((user) => (
-                                <tr key={user.id_usuario} className="hover:bg-gray-50">
+                                <tr key={user.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{user.nome}</div>
+                                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{formatCPF(user.cpf_cnpj)}</div>
+                                        <div className="text-sm text-gray-900">{user.cpf_cnpj ? formatCPF(user.cpf_cnpj) : 'N/A'}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-900">
-                                            {new Date(user.data_nascimento).toLocaleDateString('pt-BR')}
+                                            {user.data_nascimento ? new Date(user.data_nascimento).toLocaleDateString('pt-BR') : 'N/A'}
                                         </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            user.ativo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                        }`}>
-                                            {user.ativo ? 'Ativo' : 'Inativo'}
-                                        </span>
                                     </td>
                                 </tr>
                             ))}
