@@ -23,8 +23,8 @@ export class DatabaseService {
         return response.data
     }
 
-    static async getAutomoveis(page: number, limit: number): Promise<PaginatedResponse<Automovel>> {
-        const response = await api.get<PaginatedResponse<Automovel>>(`/automoveis?page=${page}&limit=${limit}`)
+    static async getAutomoveisById(id_usuario: number, page: number, limit: number): Promise<PaginatedResponse<Automovel>> {
+        const response = await api.get<PaginatedResponse<Automovel>>(`/automoveis?id_usuario=${id_usuario}&page=${page}&limit=${limit}`)
         return response.data
     }
 
