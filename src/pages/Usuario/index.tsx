@@ -13,7 +13,7 @@ export function Usuario() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { user } = useAuth()
+    const { user, currentContract, setCurrentContract } = useAuth()
     const limit = 20;
 
     const fetchUsers = useCallback(async () => {
@@ -34,8 +34,8 @@ export function Usuario() {
         // fetchUsers();
         if (user) {
             setUsers([user])
-            setLoading(false)
         }
+        setLoading(false)
     }, [currentPage, fetchUsers]);
 
     if (loading) {
@@ -56,10 +56,9 @@ export function Usuario() {
 
     return (
         <main className=" text-white w-screen flex flex-col">
-            <Header />
+            <Header currentContract={currentContract} setCurrentContract={setCurrentContract} />
             <div className="container mx-auto px-4 py-8 mt-36">
                 <h1 className="text-2xl font-bold mb-6 text-gray-800">Usuário</h1>
-                
                 <div className="overflow-x-auto bg-white rounded-lg shadow">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
@@ -100,11 +99,10 @@ export function Usuario() {
                         <button
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
-                            className={`px-4 py-2 rounded ${
-                                currentPage === 1
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
-                            }`}
+                            className={`px-4 py-2 rounded ${currentPage === 1
+                                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
+                                }`}
                         >
                             Anterior
                         </button>
@@ -114,11 +112,10 @@ export function Usuario() {
                         <button
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages}
-                            className={`px-4 py-2 rounded ${
-                                currentPage === totalPages
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
-                            }`}
+                            className={`px-4 py-2 rounded ${currentPage === totalPages
+                                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
+                                }`}
                         >
                             Próxima
                         </button>
