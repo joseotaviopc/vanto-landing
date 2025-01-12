@@ -8,7 +8,6 @@ export class DatabaseService {
     }
 
     static async getTitulos(userId: number, page: number, limit: number): Promise<PaginatedResponse<Titulo>> {
-        console.log('Service',userId)
         const response = await api.get<PaginatedResponse<Titulo>>(`/titulos/${userId}?page=${page}&limit=${limit}`)
         return response.data
     }
@@ -28,13 +27,13 @@ export class DatabaseService {
         return response.data
     }
 
-    static async getAutomoveisModalidade(page: number, limit: number): Promise<PaginatedResponse<AutomovelModalidade>> {
-        const response = await api.get<PaginatedResponse<AutomovelModalidade>>(`/automoveis-modalidade?page=${page}&limit=${limit}`)
+    static async getAutomoveisModalidadeById(id_usuario: number, page: number, limit: number): Promise<PaginatedResponse<AutomovelModalidade>> {
+        const response = await api.get<PaginatedResponse<AutomovelModalidade>>(`/automoveis-modalidade?id_usuario=${id_usuario}&page=${page}&limit=${limit}`)
         return response.data
     }
-    
+
     static async login(cpfCnpj: string, date: string): Promise<Loginresponse> {
-        const response = await api.post<Loginresponse>(`/login`, { cpf_cnpj: cpfCnpj, data_nascimento: date } )
+        const response = await api.post<Loginresponse>(`/login`, { cpf_cnpj: cpfCnpj, data_nascimento: date })
 
         // Store the access token in local storage
         localStorage.setItem('accessToken', response.data.accessToken);
