@@ -36,12 +36,12 @@ export function Login() {
                     Login
                 </h1>
 
-                <div className="mb-4 space-y-4">
+                <div className="mb-4 space-y-4 text-gray-600">
                     <div>
                         <input
                             type="text"
                             placeholder="CPF"
-                            {...register("cpf", { required: true, maxLength: 14 })}
+                            {...register("cpf")}
                             className={`w-full px-3 py-2 rounded-md border ${errors.cpf ? 'border-red-500' : 'border-gray-300'
                                 } focus:outline-none focus:ring-2 ${errors.cpf ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                                 } focus:border-transparent`}
@@ -60,7 +60,7 @@ export function Login() {
                         <input
                             type="text"
                             placeholder="01/10/1990"
-                            {...register("password", { required: true })}
+                            {...register("password")}
                             className={`w-full px-3 py-2 rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'
                                 } focus:outline-none focus:ring-2 ${errors.password ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                                 } focus:border-transparent`}
