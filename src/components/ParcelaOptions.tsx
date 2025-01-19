@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQrcode, faEye, faEnvelope, faArrowUpFromBracket, faHashtag, faCopy } from '@fortawesome/free-solid-svg-icons'
 import React from 'react';
 import { Titulo } from '../services/types';
+import { formatDate } from '@/utils';
 
 type Props = {
     titulo: Titulo
@@ -50,6 +51,23 @@ export function ParcelaOptions({ handleShowPdf, titulo }: Props) {
         window.location.href = `mailto:?subject=Parcela ${titulo.parcela}`
     }
 
+    const handleShare = (link_boleto: string, codigo_boleto: string, codigo_pix: string) => {
+        let message = `Informações da parcela ${titulo.parcela}, vencimento ${formatDate(titulo.vencimento)}:\n\n`;
+
+        if (link_boleto) {
+            message += `Link do Boleto: ${link_boleto}\n\n`;
+        }
+        if (codigo_boleto) {
+            message += `Código do Boleto: ${codigo_boleto}\n\n`;
+        }
+        if (codigo_pix) {
+            message += `Código PIX: ${codigo_pix}\n`;
+        }
+
+        const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
     const options = [
         {
             icon: faEye,
@@ -70,13 +88,13 @@ export function ParcelaOptions({ handleShowPdf, titulo }: Props) {
             disabled: titulo.codigo_pix === "" || titulo.codigo_pix === 'Código PIX não disponível'
         },
         {
-            icon: faEnvelope,
+            icon: faArrowUpFromBracket,
             text: 'Compartilhar',
-            onClick: () => { },
+            onClick: () => handleShare(titulo.link_boleto, titulo.codigo_boleto, titulo.codigo_pix),
             disabled: false
         },
         {
-            icon: faArrowUpFromBracket,
+            icon: faEnvelope,
             text: 'Email',
             onClick: handleEmail,
             disabled: false
