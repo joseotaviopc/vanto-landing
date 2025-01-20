@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import vantoLogo from '/vanto-logo-ligth.jpeg'
 
 const loginSchema = z.object({
     cpf: z.string().min(11, { message: 'CPF inválido' }).refine(val => {
@@ -30,7 +31,11 @@ export function Login() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
+            <div className='flex items-center justify-center gap-4 mb-4'>
+                <img src={vantoLogo} alt="Vanto Logo" className="w-16 h-16 rounded-2xl" width={64} height={64} />
+                <h1 className="text-3xl font-bold text-[rgb(23_37_142)]">Vanto Boletos</h1>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
                 <h1 className="text-center mb-8 text-2xl font-semibold text-gray-800">
                     Login
@@ -82,7 +87,7 @@ export function Login() {
                     className="w-full py-2 px-4 bg-[rgb(46_81_130)] text-white rounded-md hover:bg-[rgb(36_71_120)] transition-colors duration-200 font-medium"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? <FontAwesomeIcon icon={faSpinner} className="text-white text-2xl animate-spin" /> : 'Sign In'}
+                    {isSubmitting ? <FontAwesomeIcon icon={faSpinner} className="text-white text-2xl animate-spin" /> : 'Entrar'}
                 </button>
             </form>
         </div>
