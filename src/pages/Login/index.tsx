@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/useAuth';
-import { convertDateFormat, cpfOnlyNumbers, formatCPF, formatDateToISO, validateCPF } from '../../utils';
+import { convertDateFormat, cpfOnlyNumbers, formatCPF, formatDateToISO, validateCPF, maskDate } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -64,6 +64,10 @@ export function Login() {
                             className={`w-full px-3 py-2 rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'
                                 } focus:outline-none focus:ring-2 ${errors.password ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                                 } focus:border-transparent`}
+                                onChange={e => {
+                                    const formattedValue = maskDate(e.target.value);
+                                    setValue("password", formattedValue); // Update the form value
+                                }}
                         />
                         {errors.password && (
                             <p className="mt-1 text-sm text-red-500">

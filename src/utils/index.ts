@@ -54,8 +54,16 @@ const formatCPF = (value: string) => {
     return `${cleanValue.slice(0, 3)}.${cleanValue.slice(3, 6)}.${cleanValue.slice(6, 9)}-${cleanValue.slice(9, 11)}`;
 };
 
+const maskDate = (value: string) => {
+    const cleanValue = value.replace(/[^\d]/g, '');
+    if (cleanValue.length <= 2) return cleanValue;
+    if (cleanValue.length <= 5) return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2)}`;
+    if (cleanValue.length <= 8) return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2, 4)}/${cleanValue.slice(4)}`;
+    return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2, 4)}/${cleanValue.slice(4, 8)}`;
+};
+
 const cpfOnlyNumbers = (value: string) => {
     return value.replace(/[^\d]/g, '');
 }
 
-export { formatDate, formatDateToISO, convertDateFormat, cpfOnlyNumbers, compareDate, validateCPF, formatCPF }
+export { formatDate, formatDateToISO, convertDateFormat, cpfOnlyNumbers, compareDate, validateCPF, formatCPF, maskDate }
