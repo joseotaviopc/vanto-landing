@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios';
 
-// const API_DEV = 'http://localhost:3333'
 const API = `${import.meta.env.VITE_HOST}`
 
 const api = axios.create({
