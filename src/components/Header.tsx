@@ -19,7 +19,7 @@ interface HeaderProps {
 export function Header({ currentContract, setCurrentContract }: HeaderProps) {
     const { logout, contratos } = useAuth()
 
-    const placeholder = contratos.length > 0 && currentContract
+    const placeholder = contratos?.length > 0 && currentContract
         ? `Contrato: ${currentContract} - Modalidade: ${contratos[currentContract]?.modalidade_contrato === 'FINANCIAMENTO_VEICULO' ? 'Financiamento' : 'Leasing'}`
         : 'Selecione um contrato'
 
@@ -35,22 +35,24 @@ export function Header({ currentContract, setCurrentContract }: HeaderProps) {
                         Faturas
                     </Link>
                 </h1>
-                <Select onValueChange={(val) => setCurrentContract(Number(val))} >
-                    <SelectTrigger className="">
-                        <SelectValue className="font-light text-left items-start" placeholder={placeholder} />
-                    </SelectTrigger>
-                    <SelectContent className='bg-[rgb(46_81_130)] border-transparent'>
-                        {contratos.map(item => (
-                            <SelectItem
-                                key={item.id_contrato}
-                                value={String(item.id_contrato)}
-                                className="flex flex-col gap-1 border rounded-lg mb-2 p-2 text-zinc-200 hover:text-zinc-50 cursor-pointer"
-                            >
-                                <p>Contrato: {item.id_contrato} - Modalidade: {item.modalidade_contrato === 'FINANCIAMENTO_VEICULO' ? 'Financiamento' : 'Leasing'}</p>
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                {contratos && contratos.length > 0 &&
+                    <Select onValueChange={(val) => setCurrentContract(Number(val))} >
+                        <SelectTrigger className="">
+                            <SelectValue className="font-light text-left items-start" placeholder={placeholder} />
+                        </SelectTrigger>
+                        <SelectContent className='bg-[rgb(46_81_130)] border-transparent'>
+                            {contratos?.map(item => (
+                                <SelectItem
+                                    key={item.id_contrato}
+                                    value={String(item.id_contrato)}
+                                    className="flex flex-col gap-1 border rounded-lg mb-2 p-2 text-zinc-200 hover:text-zinc-50 cursor-pointer"
+                                >
+                                    <p>Contrato: {item.id_contrato} - Modalidade: {item.modalidade_contrato === 'FINANCIAMENTO_VEICULO' ? 'Financiamento' : 'Leasing'}</p>
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                }
             </div>
             <div className="flex gap-4 items-center">
                 <Link to="/automoveis">

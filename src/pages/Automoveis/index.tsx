@@ -24,7 +24,7 @@ export function Automoveis() {
             }
             const response = await DatabaseService.getAutomoveisById(user.id, currentPage, limit);
             setAutomoveis(response.data);
-            setTotalPages(Math.ceil(response.pagination.total / limit));
+            setTotalPages(Math.ceil(response.pagination?.total / limit));
         } catch (err) {
             setError('Erro ao carregar automóveis');
             console.error(err);
@@ -78,7 +78,7 @@ export function Automoveis() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {automoveis.map((automovel) => (
+                            {automoveis && automoveis.map((automovel) => (
                                 <tr key={automovel.id_automovel} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm font-medium text-gray-900">{automovel.placa || '-'}</div>
@@ -104,8 +104,8 @@ export function Automoveis() {
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
                             className={`px-4 py-2 rounded ${currentPage === 1
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
+                                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
                                 }`}
                         >
                             Anterior
@@ -117,8 +117,8 @@ export function Automoveis() {
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages}
                             className={`px-4 py-2 rounded ${currentPage === totalPages
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
+                                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                : 'bg-[rgb(46_81_130)] text-white hover:bg-[rgb(36_71_120)]'
                                 }`}
                         >
                             Próxima
